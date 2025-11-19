@@ -35,3 +35,4 @@ def _unique_nickname(base: str) -> str:
         i += 1
         candidate = f"{base}-{i}"
     return candidate
+
