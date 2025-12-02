@@ -8,6 +8,7 @@ class UserRegistrationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True)
     surname = forms.CharField(max_length=30, required=True, label="Last name")
     nickname = forms.CharField(max_length=30, required=True)
+    
 
     class Meta:
         model = User
@@ -52,3 +53,6 @@ class EmailAuthenticationForm(AuthenticationForm):
         label="Email",
         widget=forms.EmailInput(attrs={"autofocus": True})
     )
+
+class TopUpForm(forms.Form):
+  amount = forms.DecimalField(min_value=0.01, decimal_places=2, max_digits=5, label="Amount to Top Up")

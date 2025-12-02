@@ -11,6 +11,7 @@ from django.urls import reverse
 from .models import Group, GroupJoinRequest, Comment
 from .forms import GroupCreationForm, CommentForm
 from .models import Event
+from users.models import Transaction
 
 @login_required
 def create_group(request):
@@ -302,11 +303,23 @@ def home(request):
     user_groups = user.group_memberships.all()  # Get groups the user is a member of
     user_join_requests = GroupJoinRequest.objects.filter(user=user)  # Get join requests sent by the user
     available_groups = Group.objects.exclude(members=user).exclude(join_requests__user=user) # Get groups the user is not a member of and the user has not requested to join
+    transactions = (
+        Transaction.objects
+        .filter(user=user)
+        .order_by('-created_at')
+
+    )
+    profile = request.user.profile # Get the logged-in user's profile
+    return render(request, 'chipin/home.html', {
+        'balance': profile.balance
+    })
     context = {
         'pending_invitations': pending_invitations,
         'user_groups': user_groups,
         'user_join_requests': user_join_requests,
-        'available_groups': available_groups
+        'available_groups': available_groups,
+        'transactions' : transactions,
+        'balance' : profile.balance,
     }
     return render(request, 'chipin/home.html', context)
 

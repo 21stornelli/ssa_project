@@ -1,0 +1,10 @@
+{% extends 'chipin/base.html' %}
+{% block title %}Top Up{% endblock %}
+{% block content %}    
+    <h1>Top Up Balance</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Top Up</button>
+    </form>
+{% endblock %}
